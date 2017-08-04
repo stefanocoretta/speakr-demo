@@ -3,14 +3,16 @@ title: "A demo of `speakr`"
 author: "Stefano Coretta"
 date: "04/08/2017"
 output: 
-  pdf_document: 
+  html_document: 
     highlight: tango
     number_sections: yes
+    theme: readable
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
+theme_set(theme_minimal())
 library(speakr)
 ```
 
