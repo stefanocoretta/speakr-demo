@@ -109,3 +109,13 @@ formants.55 %>%
     stat_ellipse() +
     labs(title = "Vowel plot of one speaker of Italian", x = "F2 (Hertz)", y = "F1 (Hertz)")
 ```
+
+```{r vowel-space-50-bark}
+formants.50 %>%
+    ggplot(aes(F2.bark, F1.bark, colour = vowel)) +
+    geom_point() +
+    scale_x_reverse(position = "top") +
+    scale_y_reverse(position = "right") +
+    stat_ellipse() +
+    labs(title = "Vowel plot of one speaker of Italian", x = "F2 (Bark)", y = "F1 (Bark)")
+```
