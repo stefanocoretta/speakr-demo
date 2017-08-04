@@ -2,7 +2,10 @@
 title: "A demo of `speakr`"
 author: "Stefano Coretta"
 date: "04/08/2017"
-output: pdf_document
+output: 
+  pdf_document: 
+    highlight: tango
+    number_sections: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -81,4 +84,26 @@ formants.50 <- praat_run("get-formants.praat", 5, 5000, capture = TRUE) %>%
 
 formants.55 <- praat_run("get-formants.praat", 5, 5500, capture = TRUE) %>%
     read_csv()
+```
+
+# Plotting
+
+```{r vowel-space-50}
+formants.50 %>%
+    ggplot(aes(F2, F1, colour = vowel)) +
+    geom_point() +
+    scale_x_reverse(position = "top") +
+    scale_y_reverse(position = "right") +
+    stat_ellipse() +
+    labs(title = "Vowel plot of one speaker of Italian", x = "F2 (Hertz)", y = "F1 (Hertz)")
+```
+
+```{r vowel-space-55}
+formants.55 %>%
+    ggplot(aes(F2, F1, colour = vowel)) +
+    geom_point() +
+    scale_x_reverse(position = "top") +
+    scale_y_reverse(position = "right") +
+    stat_ellipse() +
+    labs(title = "Vowel plot of one speaker of Italian", x = "F2 (Hertz)", y = "F1 (Hertz)")
 ```
