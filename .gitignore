@@ -4,6 +4,7 @@
 .Ruserdata
 *.Rproj
 *.pdf
+*.html
 
 ## Core latex/pdflatex auxiliary files:
 *.aux
