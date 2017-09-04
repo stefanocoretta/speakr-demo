@@ -82,17 +82,17 @@ The values are saved in `vowels.csv`.
 
 ```{r get-formants}
 lmt("speakr-demo.Rmd")
-formants.50 <- praat_run("get-formants.praat", 5, 5000, capture = TRUE) %>%
+formants_50 <- praat_run("get-formants.praat", 5, 5000, capture = TRUE) %>%
     read_csv()
 
-formants.55 <- praat_run("get-formants.praat", 5, 5500, capture = TRUE) %>%
+formants_55 <- praat_run("get-formants.praat", 5, 5500, capture = TRUE) %>%
     read_csv()
 ```
 
 # Plotting
 
 ```{r vowel-space-50}
-formants.50 %>%
+formants_50 %>%
     ggplot(aes(F2, F1, colour = vowel)) +
     geom_point() +
     scale_x_reverse(position = "top") +
@@ -102,7 +102,7 @@ formants.50 %>%
 ```
 
 ```{r vowel-space-55}
-formants.55 %>%
+formants_55 %>%
     ggplot(aes(F2, F1, colour = vowel)) +
     geom_point() +
     scale_x_reverse(position = "top") +
@@ -112,7 +112,7 @@ formants.55 %>%
 ```
 
 ```{r vowel-space-50-bark}
-formants.50 %>%
+formants_50 %>%
     ggplot(aes(F2.bark, F1.bark, colour = vowel)) +
     geom_point() +
     scale_x_reverse(position = "top") +
