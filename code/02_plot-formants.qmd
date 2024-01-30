@@ -1,0 +1,53 @@
+---
+title: "Get and plot formants"
+author: "Stefano Coretta"
+filters: 
+  - lmt
+---
+
+```{r}
+#| label: setup
+#| include: false
+
+library(tidyverse)
+theme_set(theme_minimal())
+library(speakr)
+```
+
+```{r get-formants}
+formants_50 <- praat_run("code/get-formants.praat", 5, 5000, capture = TRUE) |>
+    read_csv()
+
+formants_55 <- praat_run("code/get-formants.praat", 5, 5500, capture = TRUE) |>
+    read_csv()
+```
+
+```{r vowel-space-50}
+formants_50 %>%
+    ggplot(aes(F2, F1, colour = vowel)) +
+    geom_point() +
+    scale_x_reverse(position = "top") +
+    scale_y_reverse(position = "right") +
+    stat_ellipse() +
+    labs(title = "Vowel plot of one speaker of Italian", x = "F2 (Hertz)", y = "F1 (Hertz)")
+```
+
+```{r vowel-space-55}
+formants_55 %>%
+    ggplot(aes(F2, F1, colour = vowel)) +
+    geom_point() +
+    scale_x_reverse(position = "top") +
+    scale_y_reverse(position = "right") +
+    stat_ellipse() +
+    labs(title = "Vowel plot of one speaker of Italian", x = "F2 (Hertz)", y = "F1 (Hertz)")
+```
+
+```{r vowel-space-50-bark}
+formants_50 %>%
+    ggplot(aes(F2.bark, F1.bark, colour = vowel)) +
+    geom_point() +
+    scale_x_reverse(position = "top") +
+    scale_y_reverse(position = "right") +
+    stat_ellipse() +
+    labs(title = "Vowel plot of one speaker of Italian", x = "F2 (Bark)", y = "F1 (Bark)")
+```

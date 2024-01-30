@@ -1,5 +1,6 @@
 project:
   title: "speakr-demon"
+  execute-dir: project
 
 editor: visual
 

@@ -1,22 +1,11 @@
 ---
-title: "A demo of `speakr`"
+title: "Praat scripts"
 author: "Stefano Coretta"
-date: "15/09/2017"
 filters: 
   - lmt
 ---
 
-```{r}
-#| label: setup
-#| include: false
-
-library(tidyverse)
-theme_set(theme_minimal())
-library(speakr)
-library(quarto)
-```
-
-# Script
+To tangle the script, simply render the file `01_get-formants.qmd`.
 
 ## get-formants.praat
 
@@ -36,9 +25,9 @@ This script extracts the formant values (in Hertz and Bark) and the duration of 
 ### "read files"
 
 ``` {.praat ref="read files"}
-sound = Read from file: "data/sc.wav"
+sound = Read from file: "../data/sc.wav"
 formant = To Formant (burg): 0, max_number_formants, max_formant, 0.025, 50
-textgrid = Read from file: "data/sc-palign.TextGrid"
+textgrid = Read from file: "../data/sc-palign.TextGrid"
 
 header$ = "word,vowel,duration,F1,F2,F1.bark,F2.bark"
 writeInfoLine: header$
@@ -78,45 +67,3 @@ endfor
 ```
 
 This code chunk is the main loop with extracts the formant values. For each vowel, as indicated in the TextGrid, the start and end time of the interval are used to calculate duration and extract formant values from the Formant object. The values are saved in `vowels.csv`.
-
-```{r get-formants}
-no <- capture.output(quarto_render("speakr-demo.qmd", execute = FALSE))
-
-formants_50 <- praat_run("get-formants.praat", 5, 5000, capture = TRUE) %>%
-    read_csv()
-
-formants_55 <- praat_run("get-formants.praat", 5, 5500, capture = TRUE) %>%
-    read_csv()
-```
-
-# Plotting
-
-```{r vowel-space-50}
-formants_50 %>%
-    ggplot(aes(F2, F1, colour = vowel)) +
-    geom_point() +
-    scale_x_reverse(position = "top") +
-    scale_y_reverse(position = "right") +
-    stat_ellipse() +
-    labs(title = "Vowel plot of one speaker of Italian", x = "F2 (Hertz)", y = "F1 (Hertz)")
-```
-
-```{r vowel-space-55}
-formants_55 %>%
-    ggplot(aes(F2, F1, colour = vowel)) +
-    geom_point() +
-    scale_x_reverse(position = "top") +
-    scale_y_reverse(position = "right") +
-    stat_ellipse() +
-    labs(title = "Vowel plot of one speaker of Italian", x = "F2 (Hertz)", y = "F1 (Hertz)")
-```
-
-```{r vowel-space-50-bark}
-formants_50 %>%
-    ggplot(aes(F2.bark, F1.bark, colour = vowel)) +
-    geom_point() +
-    scale_x_reverse(position = "top") +
-    scale_y_reverse(position = "right") +
-    stat_ellipse() +
-    labs(title = "Vowel plot of one speaker of Italian", x = "F2 (Bark)", y = "F1 (Bark)")
-```
