@@ -2,25 +2,25 @@
 title: "A demo of `speakr`"
 author: "Stefano Coretta"
 date: "15/09/2017"
-output: 
-  html_document: 
-    highlight: tango
-    number_sections: yes
-    theme: readable
-    toc: yes
+filters: 
+  - lmt
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r}
+#| label: setup
+#| include: false
+
 library(tidyverse)
 theme_set(theme_minimal())
 library(speakr)
+library(quarto)
 ```
 
 # Script
 
 ## get-formants.praat
-```praat
+
+``` {.praat file="get-formants.praat"}
 form Get formants
     real max_number_formants 5
     real max_formant 5000
@@ -34,7 +34,8 @@ endform
 This script extracts the formant values (in Hertz and Bark) and the duration of vowels from the file `sc.wav`.
 
 ### "read files"
-```praat
+
+``` {.praat ref="read files"}
 sound = Read from file: "data/sc.wav"
 formant = To Formant (burg): 0, max_number_formants, max_formant, 0.025, 50
 textgrid = Read from file: "data/sc-palign.TextGrid"
@@ -46,11 +47,11 @@ selectObject: textgrid
 intervals = Get number of intervals: 1
 ```
 
-The sound and TextGrid files are read, and the result file is initialised.
-A Formant object is also created from the sound file.
+The sound and TextGrid files are read, and the result file is initialised. A Formant object is also created from the sound file.
 
 ### "vowel loop"
-```praat
+
+``` {.praat ref="vowel loop"}
 for interval to intervals - 1
     label$ = Get label of interval: 1, interval
     if label$ == "#"
@@ -76,12 +77,10 @@ for interval to intervals - 1
 endfor
 ```
 
-This code chunk is the main loop with extracts the formant values.
-For each vowel, as indicated in the TextGrid, the start and end time of the interval are used to calculate duration and extract formant values from the Formant object.
-The values are saved in `vowels.csv`.
+This code chunk is the main loop with extracts the formant values. For each vowel, as indicated in the TextGrid, the start and end time of the interval are used to calculate duration and extract formant values from the Formant object. The values are saved in `vowels.csv`.
 
 ```{r get-formants}
-lmt("speakr-demo.Rmd")
+no <- capture.output(quarto_render("speakr-demo.qmd", execute = FALSE))
 
 formants_50 <- praat_run("get-formants.praat", 5, 5000, capture = TRUE) %>%
     read_csv()
