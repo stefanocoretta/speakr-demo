@@ -12,7 +12,7 @@ filters:
 
 library(tidyverse)
 theme_set(theme_minimal())
-library(speakr)
+# library(speakr)
 library(quarto)
 ```
 
@@ -81,6 +81,12 @@ This code chunk is the main loop with extracts the formant values. For each vowe
 
 ```{r get-formants}
 no <- capture.output(quarto_render("speakr-demo.qmd", execute = FALSE))
+```
+
+# Vowel formants
+
+```{r}
+#| eval: false
 
 formants_50 <- praat_run("get-formants.praat", 5, 5000, capture = TRUE) %>%
     read_csv()
@@ -89,9 +95,9 @@ formants_55 <- praat_run("get-formants.praat", 5, 5500, capture = TRUE) %>%
     read_csv()
 ```
 
-# Plotting
-
 ```{r vowel-space-50}
+#| eval: false
+
 formants_50 %>%
     ggplot(aes(F2, F1, colour = vowel)) +
     geom_point() +
@@ -102,6 +108,8 @@ formants_50 %>%
 ```
 
 ```{r vowel-space-55}
+#| eval: false
+
 formants_55 %>%
     ggplot(aes(F2, F1, colour = vowel)) +
     geom_point() +
@@ -112,6 +120,8 @@ formants_55 %>%
 ```
 
 ```{r vowel-space-50-bark}
+#| eval: false
+
 formants_50 %>%
     ggplot(aes(F2.bark, F1.bark, colour = vowel)) +
     geom_point() +
